@@ -1,0 +1,39 @@
+#!/bin/sh
+cd "${0%/*}" || exit
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions
+
+# 各領域に 0.orig/ をコピー
+for region in air chip substrate
+do
+    rm -rf 0/$region
+    mkdir -p 0/$region
+    cp 0.orig/* 0/$region/
+done
+
+# 固体から流体専用フィールドを削除
+for region in chip substrate
+do
+    rm -f 0/$region/U
+    rm -f 0/$region/p_rgh
+done
+
+# 各領域の境界条件適用
+for region in air chip substrate
+do
+    runApplication -s $region changeDictionary -region $region
+done
+
+# 各領域でdecomposePar
+for region in air chip substrate
+do
+    runApplication -s $region decomposePar -region $region
+done
+
+# 並列計算実行
+runParallel $(getApplication)
+
+# 最終時刻の結果を統合
+runApplication reconstructPar -allRegions -latestTime
+
+echo
+echo "End"

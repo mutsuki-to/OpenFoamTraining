@@ -1,0 +1,159 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           |                                                 |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/air";
+    object      changeDictionaryDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+T
+{
+    internalField   uniform 300;
+
+    boundaryField
+    {
+        sides
+        {
+            type            inletOutlet;
+            inletValue      uniform 300;
+            value           uniform 300;
+        }
+        top
+        {
+            type            inletOutlet;
+            inletValue      uniform 300;
+            value           uniform 300;
+        }
+        bottom
+        {
+            type            fixedValue;
+            value           uniform 300;
+        }
+        air_to_chip
+        {
+            type            compressible::turbulentTemperatureRadCoupledMixed;
+            value           uniform 300;
+            Tnbr            T;
+            kappaMethod     fluidThermo;
+        }
+        air_to_substrate
+        {
+            type            compressible::turbulentTemperatureRadCoupledMixed;
+            value           uniform 300;
+            Tnbr            T;
+            kappaMethod     fluidThermo;
+        }
+    }
+}
+
+U
+{
+    internalField   uniform (0 0 0);
+
+    boundaryField
+    {
+        sides
+        {
+            type            pressureInletOutletVelocity;
+            value           uniform (0 0 0);
+        }
+        top
+        {
+            type            pressureInletOutletVelocity;
+            value           uniform (0 0 0);
+        }
+        bottom
+        {
+            type            noSlip;
+        }
+        air_to_chip
+        {
+            type            noSlip;
+        }
+        air_to_substrate
+        {
+            type            noSlip;
+        }
+    }
+}
+
+p
+{
+    internalField   uniform 1e5;
+
+    boundaryField
+    {
+        sides
+        {
+            type            calculated;
+            value           uniform 1e5;
+        }
+        top
+        {
+            type            calculated;
+            value           uniform 1e5;
+        }
+        bottom
+        {
+            type            calculated;
+            value           uniform 1e5;
+        }
+        air_to_chip
+        {
+            type            calculated;
+            value           uniform 1e5;
+        }
+        air_to_substrate
+        {
+            type            calculated;
+            value           uniform 1e5;
+        }
+    }
+}
+
+p_rgh
+{
+    internalField   uniform 1e5;
+
+    boundaryField
+    {
+        sides
+        {
+            type            prghPressure;
+            p               uniform 1e5;
+            value           uniform 1e5;
+        }
+        top
+        {
+            type            prghPressure;
+            p               uniform 1e5;
+            value           uniform 1e5;
+        }
+        bottom
+        {
+            type            fixedFluxPressure;
+            value           uniform 1e5;
+        }
+        air_to_chip
+        {
+            type            fixedFluxPressure;
+            value           uniform 1e5;
+        }
+        air_to_substrate
+        {
+            type            fixedFluxPressure;
+            value           uniform 1e5;
+        }
+    }
+}
+
+// ************************************************************************* //

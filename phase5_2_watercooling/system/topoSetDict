@@ -1,0 +1,88 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           |                                                 |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    // ============================================================
+    // chip: X∈[-2.5, 2.5]mm, Y∈[-2.5, 2.5]mm, Z∈[0.1, 0.4]mm
+    // ============================================================
+    {
+        name    chipCellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        box     (-0.0026 -0.0026 0.000099) (0.0026 0.0026 0.000401);
+    }
+    {
+        name    chip;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     chipCellSet;
+    }
+
+    // ============================================================
+    // substrate: X∈[-15, 15]mm, Y∈[-15, 15]mm, Z∈[-2, 0.1]mm
+    // ※ 旧solder領域(0-0.1mm)を含めて、substrateの上面とする
+    // ============================================================
+    {
+        name    substrateCellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        box     (-0.0151 -0.0151 -0.002001) (0.0151 0.0151 0.000099);
+    }
+    {
+        name    substrate;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     substrateCellSet;
+    }
+
+    // ============================================================
+    // air: 残り全部
+    // ============================================================
+    {
+        name    airCellSet;
+        type    cellSet;
+        action  new;
+        source  cellToCell;
+        set     chipCellSet;
+    }
+    {
+        name    airCellSet;
+        type    cellSet;
+        action  add;
+        source  cellToCell;
+        set     substrateCellSet;
+    }
+    {
+        name    airCellSet;
+        type    cellSet;
+        action  invert;
+    }
+    {
+        name    air;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     airCellSet;
+    }
+
+);
+
+// ************************************************************************* //

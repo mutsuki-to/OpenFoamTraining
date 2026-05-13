@@ -1,0 +1,60 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           |                                                 |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/substrate";
+    object      changeDictionaryDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+T
+{
+    internalField   uniform 300;
+
+    boundaryField
+    {
+        substrate_to_chip
+        {
+            type            compressible::turbulentTemperatureRadCoupledMixed;
+            value           uniform 300;
+            Tnbr            T;
+            kappaMethod     solidThermo;
+        }
+        substrate_to_air
+        {
+            type            compressible::turbulentTemperatureRadCoupledMixed;
+            value           uniform 300;
+            Tnbr            T;
+            kappaMethod     solidThermo;
+        }
+    }
+}
+
+p
+{
+    internalField   uniform 1e5;
+
+    boundaryField
+    {
+        substrate_to_chip
+        {
+            type            calculated;
+            value           uniform 1e5;
+        }
+        substrate_to_air
+        {
+            type            calculated;
+            value           uniform 1e5;
+        }
+    }
+}
+
+// ************************************************************************* //

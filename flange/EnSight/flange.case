@@ -1,0 +1,32 @@
+FORMAT
+type: ensight gold
+
+GEOMETRY
+model:          data/constant/geometry
+
+VARIABLE
+scalar per element: 1  DT              data/********/DT
+scalar per element: 1  T               data/********/T
+vector per element: 1  flux            data/********/flux
+scalar per element: 1  gradTx          data/********/gradTx
+scalar per element: 1  gradTy          data/********/gradTy
+scalar per element: 1  gradTz          data/********/gradTz
+
+TIME
+time set:               1
+number of steps:        30
+filename numbers:
+ 20           40           60           80           100          120         
+ 140          160          180          200          220          240         
+ 260          280          300          320          340          360         
+ 380          400          420          440          460          480         
+ 500          520          540          560          580          600         
+
+time values:
+ 1.00000e-01  2.00000e-01  3.00000e-01  4.00000e-01  5.00000e-01  6.00000e-01 
+ 7.00000e-01  8.00000e-01  9.00000e-01  1.00000e+00  1.10000e+00  1.20000e+00 
+ 1.30000e+00  1.40000e+00  1.50000e+00  1.60000e+00  1.70000e+00  1.80000e+00 
+ 1.90000e+00  2.00000e+00  2.10000e+00  2.20000e+00  2.30000e+00  2.40000e+00 
+ 2.50000e+00  2.60000e+00  2.70000e+00  2.80000e+00  2.90000e+00  3.00000e+00 
+
+# end

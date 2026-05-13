@@ -1,0 +1,29 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           |                                                 |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    // substrate底面: Z = -0.002m の境界面を抽出
+    {
+        name    substrateBotFaceSet;
+        type    faceSet;
+        action  new;
+        source  boxToFace;
+        box     (-0.0151 -0.0151 -0.002011) (0.0151 0.0151 -0.001989);
+    }
+);
+
+// ************************************************************************* //

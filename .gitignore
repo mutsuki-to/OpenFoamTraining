@@ -1,0 +1,25 @@
+# OpenFOAM log files (can be hundreds of MB)
+log.*
+
+# Parallel decomposition data
+processor*/
+
+# Visualization output
+VTK/
+*.vtu
+*.vtk
+*.foam
+
+# Post-processing results
+postProcessing/
+
+# Temporary and system files
+*.orig.bak
+*~
+*.Zone.Identifier
+
+# Large mesh binary caches (optional: remove this if you want to track mesh)
+# constant/polyMesh/
+
+# ParaView state files
+*.pvsm

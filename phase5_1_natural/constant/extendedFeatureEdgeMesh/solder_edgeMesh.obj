@@ -1,0 +1,31 @@
+# Wavefront OBJ file written 2026-05-10T23:12:43
+o solder_edgeMesh
+
+# points : 8
+# lines  : 12
+
+# <points count="8">
+v -2.5 -2.5 0
+v -2.5 -2.5 0.1
+v -2.5 2.5 0
+v -2.5 2.5 0.1
+v 2.5 -2.5 0.1
+v 2.5 -2.5 0
+v 2.5 2.5 0
+v 2.5 2.5 0.1
+# </points>
+
+# <edges count="12">
+l 1 2
+l 3 1
+l 4 3
+l 2 4
+l 5 6
+l 6 7
+l 7 8
+l 8 5
+l 1 6
+l 5 2
+l 7 3
+l 4 8
+# </edges>

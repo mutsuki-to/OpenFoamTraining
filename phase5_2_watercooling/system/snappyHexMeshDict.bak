@@ -1,0 +1,190 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           |                                                 |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Which steps to run
+castellatedMesh true;
+snap            true;
+addLayers       false;     // Phase 5-1 では境界層省略
+
+// Geometry definitions
+geometry
+{
+    chip.stl
+    {
+        type    triSurfaceMesh;
+        name    chip;
+        scale   0.001;    // mm -> m
+    }
+
+    solder.stl
+    {
+        type    triSurfaceMesh;
+        name    solder;
+        scale   0.001;
+    }
+
+    substrate.stl
+    {
+        type    triSurfaceMesh;
+        name    substrate;
+        scale   0.001;
+    }
+
+    // 部品周辺だけメッシュを細かくするための仮想ボックス
+    refinementBox_chip
+    {
+        type    box;
+        min     (-0.005 -0.005  0.000);   // チップ周囲 (m単位)
+        max     ( 0.005  0.005  0.005);
+    }
+
+    refinementBox_substrate
+    {
+        type    box;
+        min     (-0.020 -0.020 -0.003);  // 基板周囲
+        max     ( 0.020  0.020  0.002);
+    }
+}
+
+// castellatedMesh phase settings
+castellatedMeshControls
+{
+    maxLocalCells       100000;
+    maxGlobalCells      2000000;
+    minRefinementCells  10;
+    maxLoadUnbalance    0.10;
+    nCellsBetweenLevels 3;
+
+    // 稜線情報の利用
+    features
+    (
+        { file "chip.eMesh";       level 4; }
+        { file "solder.eMesh";     level 4; }
+        { file "substrate.eMesh";  level 3; }
+    );
+
+    // 表面ごとの細分化レベル
+    refinementSurfaces
+    {
+        chip
+        {
+            level    (3 4);     // (min max)
+            faceZone chip;
+            cellZone chip;
+            mode    inside;     // chipの内部もregionとして扱う
+        }
+        solder
+        {
+            level    (4 4);     // 薄い層なので最大レベル固定
+            faceZone solder;
+            cellZone solder;
+            mode    inside;
+        }
+        substrate
+        {
+            level    (2 3);
+            faceZone substrate;
+            cellZone substrate;
+            mode    inside;
+        }
+    }
+
+    resolveFeatureAngle 30;
+
+    // 領域ベースの細分化
+    refinementRegions
+    {
+        refinementBox_chip
+        {
+            mode    inside;
+            levels  ((1E15 3));
+        }
+        refinementBox_substrate
+        {
+            mode    inside;
+            levels  ((1E15 2));
+        }
+    }
+
+    // 残す側を指定 (空気領域内の点、部品から離れた場所)
+    locationInMesh (0.030 0.030 0.050);
+
+    allowFreeStandingZoneFaces true;
+}
+
+// Snap phase settings
+snapControls
+{
+    nSmoothPatch        3;
+    tolerance           2.0;
+    nSolveIter          30;
+    nRelaxIter          5;
+    nFeatureSnapIter    10;
+    implicitFeatureSnap false;
+    explicitFeatureSnap true;
+    multiRegionFeatureSnap false;
+}
+
+// AddLayers phase settings (今回は使わない)
+addLayersControls
+{
+    relativeSizes       true;
+    layers              {}
+    expansionRatio      1.0;
+    finalLayerThickness 0.3;
+    minThickness        0.1;
+    nGrow               0;
+    featureAngle        60;
+    nRelaxIter          5;
+    nSmoothSurfaceNormals 1;
+    nSmoothNormals      3;
+    nSmoothThickness    10;
+    maxFaceThicknessRatio 0.5;
+    maxThicknessToMedialRatio 0.3;
+    minMedialAxisAngle  90;
+    nBufferCellsNoExtrude 0;
+    nLayerIter          50;
+}
+
+// Mesh quality settings
+meshQualityControls
+{
+    maxNonOrtho             65;
+    maxBoundarySkewness     20;
+    maxInternalSkewness     4;
+    maxConcave              80;
+    minVol                  1e-13;
+    minTetQuality           1e-15;
+    minArea                 -1;
+    minTwist                0.02;
+    minDeterminant          0.001;
+    minFaceWeight           0.02;
+    minVolRatio             0.01;
+    minTriangleTwist        -1;
+    nSmoothScale            4;
+    errorReduction          0.75;
+}
+
+writeFlags
+(
+    scalarLevels
+    layerSets
+    layerFields
+);
+
+mergeTolerance 1e-6;
+
+// ************************************************************************* //

@@ -1,0 +1,27 @@
+#!/bin/sh
+cd "${0%/*}" || exit
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions
+
+# ----------------------------------------------------------------------------
+# Phase 5-2: 水冷CHT メッシュ生成
+# substrate底面に substrate_bottom パッチを追加
+# ----------------------------------------------------------------------------
+
+runApplication blockMesh
+
+runApplication surfaceFeatureExtract
+
+runApplication snappyHexMesh -overwrite
+
+runApplication topoSet
+
+runApplication splitMeshRegions -cellZones -overwrite
+
+# substrate底面を substrate_bottom パッチとして抽出（分割後のsubstrateメッシュに対して実行）
+runApplication -s substrate topoSet -region substrate
+runApplication -s substrate createPatch -region substrate -overwrite
+
+restore0Dir
+
+echo
+echo "Allrun.pre 完了"
