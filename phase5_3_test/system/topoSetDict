@@ -1,0 +1,109 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           |                                                 |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    // ============================================================
+    // chip: X∈[-2.5, 2.5]mm, Y∈[-2.5, 2.5]mm, Z∈[0.3, 0.6]mm
+    // ============================================================
+    {
+        name    chipCellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        box     (-0.0026 -0.0026 0.000299) (0.0026 0.0026 0.000601);
+    }
+    {
+        name    chip;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     chipCellSet;
+    }
+
+    // ============================================================
+    // dbc_cu_top: X∈[-20, 20]mm, Y∈[-20, 20]mm, Z∈[0, 0.3]mm
+    // ============================================================
+    {
+        name    dbc_cu_topCellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        box     (-0.0201 -0.0201 -0.000001) (0.0201 0.0201 0.000299);
+    }
+    {
+        name    dbc_cu_top;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     dbc_cu_topCellSet;
+    }
+
+    // ============================================================
+    // dbc_ceramic: X∈[-22.5, 22.5]mm, Y∈[-22.5, 22.5]mm, Z∈[-0.64, 0.00]mm
+    // ============================================================
+    {
+        name    dbc_ceramicCellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        box     (-0.0226 -0.0226 -0.000641) (0.0226 0.0226 -0.000001);
+    }
+    {
+        name    dbc_ceramic;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     dbc_ceramicCellSet;
+    }
+
+    // ============================================================
+    // dbc_cu_bot: X∈[-20, 20]mm, Y∈[-20, 20]mm, Z∈[-0.94, -0.64]mm
+    // ============================================================
+    {
+        name    dbc_cu_botCellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        box     (-0.0201 -0.0201 -0.000941) (0.0201 0.0201 -0.000641);
+    }
+    {
+        name    dbc_cu_bot;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     dbc_cu_botCellSet;
+    }
+
+    // ============================================================
+    // baseplate: X∈[-30, 30]mm, Y∈[-30, 30]mm, Z∈[-3.94, -0.94]mm
+    // ============================================================
+    {
+        name    baseplateCellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        box     (-0.0301 -0.0301 -0.0394001) (0.0301 0.0301 -0.000941);
+    }
+    {
+        name    baseplate;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     baseplateCellSet;
+    }
+);
+// ************************************************************************* //

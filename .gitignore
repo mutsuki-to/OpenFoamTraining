@@ -1,5 +1,6 @@
 # OpenFOAM log files (can be hundreds of MB)
 log.*
+log_*
 
 # Parallel decomposition data
 processor*/
@@ -17,9 +18,11 @@ postProcessing/
 *.orig.bak
 *~
 *.Zone.Identifier
+*:Zone.Identifier
 
-# Large mesh binary caches (optional: remove this if you want to track mesh)
-# constant/polyMesh/
+# Large mesh files in new folders (100MB+ exceed GitHub limit)
+phase5_4*/constant/polyMesh/
+phase5_3_test/constant/polyMesh/
 
 # ParaView state files
 *.pvsm

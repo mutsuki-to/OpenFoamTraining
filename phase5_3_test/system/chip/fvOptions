@@ -1,0 +1,35 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           |                                                 |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/chip";
+    object      fvOptions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+heatSource
+{
+    type            scalarSemiImplicitSource;
+
+    selectionMode   all;
+    volumeMode      absolute;
+
+    sources
+    {
+        h
+        {
+            explicit    20;     // 発熱量 [W]
+            implicit    0;
+        }
+    }
+}
+
+// ************************************************************************* //

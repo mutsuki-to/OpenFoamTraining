@@ -1,0 +1,40 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       volScalarField;
+    location    "0/heatsink";
+    object      T;
+}
+dimensions      [ 0 0 0 1 0 0 0 ];
+internalField   uniform 300;
+boundaryField
+{
+    ".*"
+    {
+        type            zeroGradient;
+    }
+    baseplate
+    {
+        type            zeroGradient;
+    }
+    heatsink
+    {
+        type            zeroGradient;
+    }
+    heatsink_to_baseplate
+    {
+        type            compressible::turbulentTemperatureRadCoupledMixed;
+        Tnbr            T;
+        kappaMethod     solidThermo;
+        thicknessLayers ( 0.0001 );
+        kappaLayers     ( 0.4444 );
+        value           uniform 300;
+    }
+    heatsink_bottom
+    {
+        type            fixedValue;
+        value           uniform 300;
+    }
+}
