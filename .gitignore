@@ -20,9 +20,13 @@ postProcessing/
 *.Zone.Identifier
 *:Zone.Identifier
 
-# Large mesh files in new folders (100MB+ exceed GitHub limit)
+# Large mesh files (regenerable via blockMesh/snappyHexMesh/checkMesh)
+# マルチリージョン構成では constant/<region>/polyMesh/ になるため、
+# 直下(シングルリージョン)とワイルドカードの両方を拾う。
 phase5_4*/constant/polyMesh/
+phase5_4*/constant/*/polyMesh/
 phase5_3_test/constant/polyMesh/
+phase5_3_test/constant/*/polyMesh/
 
 # ParaView state files
 *.pvsm

@@ -1,0 +1,45 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           |                                                 |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      changeDictionaryDict;
+}
+T
+{
+    internalField   uniform 300;
+    boundaryField
+    {
+        baseplate
+        {
+            type    zeroGradient;
+            value   uniform 300;
+        }
+        heatsink
+        {
+            type    zeroGradient;
+            value   uniform 300;
+        }
+        heatsink_to_baseplate
+        {
+            type            compressible::turbulentTemperatureRadCoupledMixed;
+            Tnbr            T;
+            kappaMethod     solidThermo;
+            thicknessLayers (1.0e-4);
+            kappaLayers     (4.444e-5);
+            value           uniform 300;
+        }
+        heatsink_bottom
+        {
+            type    fixedValue;
+            value   uniform 300;
+        }
+    }
+}

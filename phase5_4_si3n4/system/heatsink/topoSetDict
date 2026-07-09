@@ -1,0 +1,32 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           |                                                 |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+actions
+(
+    {
+        name    heatsinkBottomFaceSet;
+        type    faceSet;
+        action  new;
+        source  patchToFace;
+        patch   heatsink;
+    }
+    {
+        name    heatsinkBottomFaceSet;
+        type    faceSet;
+        action  subset;
+        source  normalToFace;
+        normal  (0 0 -1);
+        cos     0.9;
+    }
+);
